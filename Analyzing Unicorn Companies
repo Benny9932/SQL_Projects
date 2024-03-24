@@ -1,0 +1,77 @@
+
+
+-- Query 1: Find the total number of unicorns in each industry.
+
+SELECT industry,COUNT(*) AS total_unicorns
+FROM industries
+GROUP BY industry
+ORDER BY total_unicorns DESC;
+
+
+-- Query 2: Calculate the average valuation in billions of unicorns in each industry.
+
+SELECT i.industry, ROUND(AVG(f.valuation / 1000000000), 2) AS avg_valuation_billions
+FROM industries i
+INNER JOIN funding f ON i.company_id = f.company_id
+GROUP BY i.industry
+ORDER BY avg_valuation_billions DESC;
+
+
+-- Query 3: Analyze the growth of unicorn companies in the artificial intelligence industry over time
+
+SELECT i.industry, d.year_founded, COUNT(d.company_id) AS num_unicorns
+FROM industries i
+LEFT JOIN dates d ON i.company_id = d.company_id
+WHERE i.industry = 'Artificial intelligence'
+GROUP BY i.industry, d.year_founded
+ORDER BY d.year_founded DESC;
+
+
+-- Query 4 : Find the year with the highest number of new unicorn companies
+
+SELECT EXTRACT(year FROM d.date_joined) AS year, count(i.*) AS number_unicorns
+FROM dates d
+INNER JOIN industries i
+ON i.company_id = d.company_id
+GROUP BY year
+ORDER BY number_unicorns DESC
+LIMIT 3;
+
+
+-- Query 5: Calculate the total funding raised by companies in each country
+
+SELECT c.country,  ROUND((sum(funding) / 1000000000),2) AS total_funding 
+FROM funding f
+INNER JOIN companies c
+ON f.company_id = c.company_id
+GROUP BY c.country
+ORDER BY total_funding DESC;
+
+
+-- Query 6: Determine the top 5 cities with the highest number of unicorn companies: 
+
+SELECT country, city, COUNT(*) AS total_unicorns
+FROM companies
+GROUP BY country, city
+ORDER BY total_unicorns DESC
+LIMIT 5;
+
+
+-- Query 7: Identify the companies that have the highest valuations for each industry
+
+SELECT i.industry, c.company, ROUND((f.valuation/1000000000),2) AS valuation_billions
+FROM industries i
+INNER JOIN funding f ON i.company_id = f.company_id
+INNER JOIN companies c ON i.company_id = c.company_id
+WHERE f.valuation = (
+    SELECT MAX(f2.valuation)
+    FROM industries i2
+    INNER JOIN funding f2 ON i2.company_id = f2.company_id
+    WHERE i2.industry = i.industry
+)
+ORDER BY f.valuation DESC;
+
+
+
+
+
