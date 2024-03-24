@@ -8,5 +8,5 @@ Below is a list of SQL projects included in this repository:
 
 1. **Unicorn Company Analysis**
    - Description: Analyzing unicorn companies' distribution, funding trends, and valuation metrics.
-   - [Link to Project Folder](#) (Optional)
+   - [Link to Project Folder]([#](https://github.com/Benny9932/SQL_Projects/blob/main/Analyzing%20Unicorn%20Companies)https://github.com/Benny9932/SQL_Projects/blob/main/Analyzing%20Unicorn%20Companies)
 
